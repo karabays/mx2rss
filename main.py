@@ -7,13 +7,15 @@ from sqlalchemy.orm import Session
 
 import database
 import models
-from config import config
+import config
+import MXroute
 
 database.Base.metadata.create_all(bind=database.engine)
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
-domain = config.domain
+settings = config.settings
+mx = MXroute.MXroute(settings.dapanel_user, settings.dapanel_pass, settings.dapanel_url)
 
 
 def create_new_feed(email):
@@ -28,7 +30,7 @@ def new_routing_api(feed: models.FeedBase):
 
 @app.get("/", response_class=HTMLResponse)
 def home(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request, "domain": domain['email']})
+    return templates.TemplateResponse("index.html", {"request": request, "domain": settings.email_domain})
 
 @app.post("/new/", response_class=HTMLResponse)
 def new_routing(request: Request, email: str = Form(...)):

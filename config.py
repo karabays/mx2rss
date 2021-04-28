@@ -1,15 +1,15 @@
-import yaml
+from pydantic import BaseSettings
 
-class Config():
+class Settings(BaseSettings):
+    site_url: str
+    email_domain: str
+    dapanel_url: str
+    dapanel_user: str
+    dapanel_pass: str
+    fetch_frequency: str = 300
 
-    def __init__(self):
-        with open("config.yaml") as config_file:
-            self.config = yaml.safe_load(config_file)
+    class Config:
+        env_file = '.env'
+        env_file_encoding = 'utf-8'
 
-    def __getattr__(self, name):
-        try:
-            return self.config[name]
-        except KeyError:
-            return getattr(self.args, name)
-
-config = Config()
+settings = Settings()

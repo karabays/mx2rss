@@ -7,7 +7,7 @@ from sqlalchemy.orm import sessionmaker, relationship, Session
 from fastapi_rss import RSSFeed, RSSResponse, Item, Category, CategoryAttrs, GUID
 
 import models
-from config import config
+import config
 
 SQLALCHEMY_DATABASE_URL = "sqlite:///./sql_app.db"
 
@@ -18,7 +18,7 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
 
-domain = config.domain
+settings = config.settings
 
 class Feed(Base):
     __tablename__ = "feeds"
@@ -50,9 +50,9 @@ def get_feed_by_email(email: str):
 
 def create_feed(email: str):
     db = SessionLocal()
-    url = domain["site"] + "/rss/" + email
-    email_id = email+"@"+domain['email']
-    web_domain = domain['site']
+    web_domain = settings.site_url
+    url = web_domain + "/rss/" + email
+    email_id = email+"@"+settings.email_domain
     feed_dict = {"url":url, "domain":web_domain,
                     "email_id":email_id, "email": email}
     feed = Feed(**feed_dict)
