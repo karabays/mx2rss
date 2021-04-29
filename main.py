@@ -5,6 +5,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi_rss import RSSFeed, RSSResponse
 from sqlalchemy.orm import Session
 from fastapi_rss import RSSFeed, RSSResponse, Item, Category, CategoryAttrs, GUID
+import uuid
 
 import database
 import models
@@ -33,7 +34,7 @@ def first_feed(feed):
     new_feed = mail2feed.first_item_dict
     new_feed['author'] = feed.email_id
     new_feed['feed_id'] = feed.id
-    new_feed['guid'] = 'hryr6346hdhde'
+    new_feed['guid'] = str(uuid.uuid4())
     database.create_feed_item(new_feed)
 
 
@@ -76,6 +77,7 @@ def serve_rss(email):
     feed_data = serve_feeds(email)
     feed = RSSFeed(**feed_data)
     return RSSResponse(feed)
+
 
 if __name__ == "__main__":
     logger.info('*******************')
