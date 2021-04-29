@@ -1,5 +1,7 @@
 from pydantic import BaseSettings
 
+from log import logger
+
 class Settings(BaseSettings):
     site_url: str
     email_domain: str

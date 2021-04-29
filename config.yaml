@@ -1,9 +1,0 @@
-domain:
-  site: 'http://127.0.0.1:8080'
-  email: karabay.biz
-
-email:
-  url: 123.123.123.123
-  user: mock
-  password: mack
-  frequency: 300
