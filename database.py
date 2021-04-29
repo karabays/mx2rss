@@ -8,13 +8,19 @@ from fastapi_rss import RSSFeed, RSSResponse, Item, Category, CategoryAttrs, GUI
 
 import models
 import config
+from log import logger
 
-SQLALCHEMY_DATABASE_URL = "sqlite:///./sql_app.db"
+
+
+SQLALCHEMY_DATABASE_URL = "sqlite:///./mx2rss.db"
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
 )
+
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+db = SessionLocal()
 
 Base = declarative_base()
 
@@ -40,16 +46,15 @@ class FeedItem(Base):
     author = Column(String, index=True)
     pub_date = Column(DateTime, index=True)
     feed_id = Column(Integer, ForeignKey("feeds.id"))
+    guid = Column(String, index=True)
     feed = relationship("Feed", back_populates="items")
 
 
 def get_feed_by_email(email: str):
-    db = SessionLocal()
     return db.query(Feed).filter(Feed.email == email).first()
 
 
 def create_feed(email: str):
-    db = SessionLocal()
     web_domain = settings.site_url
     url = web_domain + "/rss/" + email
     email_id = email+"@"+settings.email_domain
@@ -59,52 +64,18 @@ def create_feed(email: str):
     db.add(feed)
     db.commit()
     db.refresh(feed)
+    logger.info(f'New feed created for {feed.email_id}')
     return feed
 
 
-def get_items(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.Item).offset(skip).limit(limit).all()
+def get_feed_items(id:int, limit: int = 10):
+    return db.query(FeedItem).filter(FeedItem.feed_id == id).limit(limit).all()
 
 
-# def create_feed_item(db: Session, item: models.ItemCreate, user_id: int):
-#     db_item = models.Item(**item.dict(), owner_id=user_id)
-#     db.add(db_item)
-#     db.commit()
-#     db.refresh(db_item)
-#     return db_item
-
-
-test = {
-        'title': 'Test 2',
-        'link': '',
-        'description': "",
-        'language': 'en-us',
-        'copyright': 'Copyright',
-        'last_build_date': datetime.datetime(
-            year=2021, month=1, day=11,
-            hour=2, minute=49, second=32
-        ),
-        'managing_editor': 'self@example.com',
-        'webmaster': 'self@example.com',
-        'generator': 'Test',
-        'ttl': 30,
-        'item': [
-            Item(
-                title='Test',
-                link='https://www.example.com/projects/2020/12/31/test',
-                description='',
-                author='Dogeek',
-                category=Category(
-                    content='0001',
-                    attrs=CategoryAttrs(domain='test')
-                ),
-                pub_date=datetime.datetime(
-                    year=2020, month=12, day=31,
-                    hour=12, minute=40, second=16,
-                ),
-                guid=GUID(content='abcdefghijklmnopqrstuvwxyz')
-            )
-        ],
-    }
-
-feed_data = {"test":test}
+def create_feed_item(new_feed):
+    db = SessionLocal()
+    db_item = FeedItem(**new_feed)
+    db.add(db_item)
+    db.commit()
+    db.refresh(db_item)
+    return db_item
