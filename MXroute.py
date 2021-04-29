@@ -1,4 +1,3 @@
-
 import requests
 from requests.auth import HTTPBasicAuth
 import json
@@ -38,15 +37,16 @@ class MXroute:
             return {"result": "Fail", "detail":r['details']}
         return r
 
+
     def list_forwarders(self, email_domain):
         r = self.make_call('CMD_API_EMAIL_FORWARDERS', payload = {'domain':email_domain})
         if r is None:
             return None
         return r
 
+
     def delete_forwarder(self, email_from, email_to):
-        r = self.make_call('/execute/Email/delete_forwarder?address={}&forwarder={}'.format(email_from, email_to))
-        return r
+        pass
 
 
 def test():
@@ -56,5 +56,3 @@ def test():
     test_mx = MXroute(settings.dapanel_user, settings.dapanel_pass, settings.dapanel_url)
     print(test_mx.add_forwarder("test4", 'karabay.biz','mx2rss@karabay.biz'))
     print(test_mx.list_forwarders('karabay.biz'))
-
-test()
