@@ -3,6 +3,7 @@ from requests.auth import HTTPBasicAuth
 import json
 from urllib.parse import parse_qs
 
+from log import logger
 
 class MXroute:
     def __init__(self, userid, password, server):
@@ -32,8 +33,10 @@ class MXroute:
         payload = {"action":"create", "domain":domain, "user":email, "email":target}
         r = self.make_call('CMD_API_EMAIL_FORWARDERS', payload=payload)
         if r['error']==['0']:
+            logger.info(f"forwarder created: {email}@{domain} -> {target}")
             return {"result":"Success", "detail":f"forwarder created: {email}@{domain} -> {target}"}
         else:
+            logger.warning(f"Forwarder creatin failed: {r['details']}")
             return {"result": "Fail", "detail":r['details']}
         return r
 

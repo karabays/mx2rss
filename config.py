@@ -8,6 +8,9 @@ class Settings(BaseSettings):
     dapanel_url: str
     dapanel_user: str
     dapanel_pass: str
+    inbox: str
+    inbox_url: str
+    inbox_pass: str
     fetch_frequency: str = 300
 
     class Config:

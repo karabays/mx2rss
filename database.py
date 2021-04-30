@@ -45,13 +45,17 @@ class FeedItem(Base):
     description = Column(String, index=True)
     author = Column(String, index=True)
     pub_date = Column(DateTime, index=True)
-    feed_id = Column(Integer, ForeignKey("feeds.id"))
     guid = Column(String, index=True)
+    feed_id = Column(Integer, ForeignKey("feeds.id"))
     feed = relationship("Feed", back_populates="items")
 
 
 def get_feed_by_email(email: str):
     return db.query(Feed).filter(Feed.email == email).first()
+
+
+def get_feed_by_email_id(email_id: str):
+    return db.query(Feed).filter(Feed.email_id == email_id).first()
 
 
 def create_feed(email: str):
@@ -69,7 +73,7 @@ def create_feed(email: str):
 
 
 def get_feed_items(id:int, limit: int = 10):
-    return db.query(FeedItem).filter(FeedItem.feed_id == id).limit(limit).all()
+    return db.query(FeedItem).filter(FeedItem.feed_id == id).order_by(FeedItem.id.desc()).limit(limit)
 
 
 def create_feed_item(new_feed):
