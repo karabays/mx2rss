@@ -20,11 +20,9 @@ def fetch_mails():
     for msg in msgs:
         feed = {'title':msg.subject, "description":msg.html, 
         'author': msg.from_, 'pub_date':msg.date,
-        'guid':msg.uid, 'to': msg.to[0]}
+        'guid':msg.uid, 'to': msg.headers['envelope-to'][0]}
         feeds.append(feed)
-        logger.info(f"New message retrieved for {msg.to}")
+        logger.info(f"New message retrieved for {msg.headers['envelope-to']}")
     if len(feeds) == 0:
         logger.info("No new messages.")
     return feeds
-
-

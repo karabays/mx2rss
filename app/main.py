@@ -24,14 +24,13 @@ settings = config.settings
 mx = MXroute.MXroute(settings.dapanel_user, settings.dapanel_pass, settings.dapanel_url)
 
 
-def create_new_feed(email):
-    if database.get_feed_by_email(email=email):
+def create_new_feed(feed: models.FeedBase):
+    if database.get_feed_by_email(email=feed.email):
         raise HTTPException(status_code=400, detail="Email already registered")
-    mx.add_forwarder(email, settings.email_domain, settings.inbox)
-    feed = database.create_feed(email=email)
-    first_feed(feed)
-
-    return feed
+    mx.add_forwarder(feed.email, settings.email_domain, settings.inbox)
+    new_feed = database.create_feed(email=feed.email)
+    first_feed(new_feed)
+    return new_feed
 
 
 def first_feed(feed):
@@ -44,16 +43,20 @@ def first_feed(feed):
 @app.on_event('startup')
 @repeat_every(seconds=int(settings.fetch_frequency), logger=logger)
 def check_mail():
-    feeds = mail2feed.fetch_mails()
-    if feeds:
-        for feed in feeds:
-            feed['feed_id'] = database.get_feed_by_email_id(feed['to']).id
-            del feed['to']
-            database.create_feed_item(feed)
+    mails = mail2feed.fetch_mails()
+    if mails:
+        for mail in mails:
+            feed = database.get_feed_by_email_id(mail['to'])
+            if feed:
+                mail['feed_id'] = feed.id
+                del mail['to']
+                database.create_feed_item(mail)
 
 
 def serve_feeds(email):
     feed = database.get_feed_by_email(email)
+    if feed is None:
+        raise HTTPException(404, detail='Feed do not exist.')
     feed_items = database.get_feed_items(feed.id)
 
     items = []
@@ -75,7 +78,7 @@ def serve_feeds(email):
 
 @app.post("/api/new/", response_model=models.Feed)
 def new_routing_api(feed: models.FeedBase):
-    return create_new_feed(email=feed.email)
+    return create_new_feed(feed)
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -85,7 +88,8 @@ def home(request: Request):
 
 @app.post("/new/", response_class=HTMLResponse)
 def new_routing(request: Request, email: str = Form(...)):
-    new_dict = vars(create_new_feed(email))
+    new_feed = models.FeedBase(email=email)
+    new_dict = vars(create_new_feed(new_feed))
     new_dict['request'] = request
     return templates.TemplateResponse("new.html", new_dict)
 
