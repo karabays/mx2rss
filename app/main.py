@@ -19,7 +19,7 @@ import mail2feed as mail2feed
 database.Base.metadata.create_all(bind=database.engine)
 
 app = FastAPI()
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory="./templates")
 settings = config.settings
 mx = MXroute.MXroute(settings.dapanel_user, settings.dapanel_pass, settings.dapanel_url)
 

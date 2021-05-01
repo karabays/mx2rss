@@ -7,3 +7,6 @@ uvicorn==0.13.4
 requests==2.25.1
 fastapi==0.63.0
 fastapi_utils==0.2.1
+Jinja2==2.11.3
+python-dotenv==0.17.0
+python-multipart==0.0.5
