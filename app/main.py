@@ -99,7 +99,7 @@ if __name__ == "__main__":
     logger.info('*******************')
     logger.info("mx2rss is starting.")
     logger.info('*******************')
-    uvicorn.run('main:app', host='127.0.0.1', port=8080, log_level='info', reload=True)
+    uvicorn.run('main:app', host='0.0.0.0', port=8080, log_level='info', reload=True)
     logger.info('******************')
     logger.info("mx2rss is closing.")
     logger.info('******************')
