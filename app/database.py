@@ -12,7 +12,7 @@ from log import logger
 
 
 
-SQLALCHEMY_DATABASE_URL = "sqlite:///./mx2rss.db"
+SQLALCHEMY_DATABASE_URL = "sqlite:///./data//mx2rss.db"
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}

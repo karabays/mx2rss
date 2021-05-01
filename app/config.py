@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     fetch_frequency: str = 300
 
     class Config:
-        env_file = '.env'
+        env_file = './data/.env'
         env_file_encoding = 'utf-8'
 
 settings = Settings()
