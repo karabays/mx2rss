@@ -6,13 +6,13 @@ from sqlalchemy.orm import sessionmaker, relationship, Session
 
 from fastapi_rss import RSSFeed, RSSResponse, Item, Category, CategoryAttrs, GUID
 
-import app.models as models
-import app.config as config
-from app.log import logger
+import models as models
+import config as config
+from log import logger
 
 
 
-SQLALCHEMY_DATABASE_URL = "sqlite:///./app/mx2rss.db"
+SQLALCHEMY_DATABASE_URL = "sqlite:///./mx2rss.db"
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}

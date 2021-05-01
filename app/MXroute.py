@@ -3,7 +3,7 @@ from requests.auth import HTTPBasicAuth
 import json
 from urllib.parse import parse_qs
 
-from app.log import logger
+from log import logger
 
 class MXroute:
     def __init__(self, userid, password, server):

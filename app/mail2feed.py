@@ -1,9 +1,9 @@
-import app.models as models
-import app.config as config
-
 import datetime as dt
-from app.log import logger
+from log import logger
 from imap_tools import MailBox, AND
+
+import models as models
+import config as config
 
 settings = config.settings
 
