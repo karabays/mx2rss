@@ -4,9 +4,9 @@
 Read your newsletters with RSS. Inspired by [Kill-the-newsletter!](https://kill-the-newsletter.com/) website. 
 It's also self-hostable but requires also to maintain your own mail server.
 
-You need MXRoute account for this to work. Program uses DirectAdmin api to create email 
-forwarders. I have no ability to test it but in theory it should work with other email 
-service providers using DirectAdmin.
+You need [MXRoute](https://mxroute.com/) account for this to work.
+Program uses DirectAdmin api to create email forwarders. 
+I have no ability to test it but in theory it should work with other email service providers using DirectAdmin.
 
 
 ## Installation 
@@ -83,7 +83,7 @@ https://fastapi-utils.davidmontague.xyz/user-guide/repeated-tasks/
 
 https://pydantic-docs.helpmanual.io/
 
-
+https://www.directadmin.com/api.php
 
 
 
