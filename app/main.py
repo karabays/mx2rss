@@ -9,17 +9,17 @@ from fastapi_rss import RSSFeed, RSSResponse, Item, Category, CategoryAttrs, GUI
 
 import uuid
 
-import database
-import models
-import config
-import MXroute
-from log import logger
-import mail2feed
+import app.database as database
+import app.models as models
+import app.config as config
+import app.MXroute as MXroute
+from app.log import logger
+import app.mail2feed as mail2feed
 
 database.Base.metadata.create_all(bind=database.engine)
 
-app = FastAPI()
-templates = Jinja2Templates(directory="templates")
+fapp = FastAPI()
+templates = Jinja2Templates(directory="app/templates")
 settings = config.settings
 mx = MXroute.MXroute(settings.dapanel_user, settings.dapanel_pass, settings.dapanel_url)
 
@@ -41,7 +41,7 @@ def first_feed(feed):
     new_feed['guid'] = str(uuid.uuid4())
     database.create_feed_item(new_feed)
 
-@app.on_event('startup')
+@fapp.on_event('startup')
 @repeat_every(seconds=int(settings.fetch_frequency), logger=logger)
 def check_mail():
     feeds = mail2feed.fetch_mails()
@@ -72,24 +72,24 @@ def serve_feeds(email):
     return feed_data
 
 
-@app.post("/api/new/", response_model=models.Feed)
+@fapp.post("/api/new/", response_model=models.Feed)
 def new_routing_api(feed: models.FeedBase):
     return create_new_feed(email=feed.email)
 
 
-@app.get("/", response_class=HTMLResponse)
+@fapp.get("/", response_class=HTMLResponse)
 def home(request: Request):
     return templates.TemplateResponse("index.html", {"request": request, "domain": settings.email_domain})
 
 
-@app.post("/new/", response_class=HTMLResponse)
+@fapp.post("/new/", response_class=HTMLResponse)
 def new_routing(request: Request, email: str = Form(...)):
     new_dict = vars(create_new_feed(email))
     new_dict['request'] = request
     return templates.TemplateResponse("new.html", new_dict)
 
 
-@app.get('/rss/{email}')
+@fapp.get('/rss/{email}')
 def serve_rss(email):
     feed_data = serve_feeds(email)
     feed = RSSFeed(**feed_data)
@@ -99,7 +99,7 @@ if __name__ == "__main__":
     logger.info('*******************')
     logger.info("mx2rss is starting.")
     logger.info('*******************')
-    uvicorn.run('main:app', host='0.0.0.0', port=8080, log_level='info', reload=True)
+    uvicorn.run('main:fapp', host='0.0.0.0', log_level='info', reload=True)
     logger.info('******************')
     logger.info("mx2rss is closing.")
     logger.info('******************')

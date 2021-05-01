@@ -1,6 +1,6 @@
 from pydantic import BaseSettings
 
-from log import logger
+from app.log import logger
 
 class Settings(BaseSettings):
     site_url: str
@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     fetch_frequency: str = 300
 
     class Config:
-        env_file = '.env'
+        env_file = 'app/.env'
         env_file_encoding = 'utf-8'
 
 settings = Settings()
