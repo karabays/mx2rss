@@ -36,7 +36,7 @@ class MXroute:
             logger.info(f"forwarder created: {email}@{domain} -> {target}")
             return {"result":"Success", "detail":f"forwarder created: {email}@{domain} -> {target}"}
         else:
-            logger.warning(f"Forwarder creatin failed: {r['details']}")
+            logger.warning(f"Forwarder creation failed: {r['details']}")
             return {"result": "Fail", "detail":r['details']}
         return r
 

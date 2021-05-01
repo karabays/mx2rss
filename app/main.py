@@ -45,10 +45,11 @@ def first_feed(feed):
 @repeat_every(seconds=int(settings.fetch_frequency), logger=logger)
 def check_mail():
     feeds = mail2feed.fetch_mails()
-    for feed in feeds:
-        feed['feed_id'] = database.get_feed_by_email_id(feed['to']).id
-        del feed['to']
-        database.create_feed_item(feed)
+    if feeds:
+        for feed in feeds:
+            feed['feed_id'] = database.get_feed_by_email_id(feed['to']).id
+            del feed['to']
+            database.create_feed_item(feed)
 
 
 def serve_feeds(email):
@@ -99,7 +100,7 @@ if __name__ == "__main__":
     logger.info('*******************')
     logger.info("mx2rss is starting.")
     logger.info('*******************')
-    uvicorn.run('main:app', host='0.0.0.0', log_level='info', reload=True)
+    uvicorn.run('main:app', host='0.0.0.0', port=9123, log_level='info', reload=True)
     logger.info('******************')
     logger.info("mx2rss is closing.")
     logger.info('******************')

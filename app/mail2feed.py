@@ -23,7 +23,8 @@ def fetch_mails():
         'guid':msg.uid, 'to': msg.to[0]}
         feeds.append(feed)
         logger.info(f"New message retrieved for {msg.to}")
-    mailbox.logout()
+    if len(feeds) == 0:
+        logger.info("No new messages.")
     return feeds
 
 
