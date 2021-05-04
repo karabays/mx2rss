@@ -1,0 +1,39 @@
+<html>
+<head>
+    <title>emails to RSS</title>
+    <link href="{{ url_for('static', path='css/bootstrap.min.css') }}" rel="stylesheet">
+</head>
+<body>
+    
+    <div class="container">
+    <h1>mx2rss</h1>
+    <p>Reduce the newsletters in your inbox. Create an email forwarder in the below and subscribed to RSS feed shown afterwards.</p>
+    <p>Create a new address to subscribe newsletters:</p>
+    <form action="/new" method="post">
+        <div class="row g-3 align-items-center">
+            <div class="col-auto">
+                <label for="email" class="col-form-label">Email:</label>
+            </div>
+            <div class="col-auto">
+                <input type="text" class="form-control" id="email" name="email" aria-describedby="passwordHelpInline">
+            </div>
+            <div class="col-auto">
+                <span id="passwordHelpInline" class="form-text">
+                @{{domain}}
+                </span>
+            </div>
+            <div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </form>
+    <div class="alert alert-primary" role="alert">
+        <h4>Important:</h4>
+        <p>RSS feeds are protected by a passphrase but still publicly accessible if someone learns the URL.</p>
+        <p>Don't use this for websites send sensitive information like password recovery, confirmation codes etc.</p>
+        <p>In general don't use this for creating accounts.</p>
+        <p>You can setup auto forwarders from gmail etc. but keep above points in mind.</p>
+    </div>
+
+</body>
+</html>
