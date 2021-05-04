@@ -4,21 +4,23 @@ from sqlalchemy.orm import Session
 from fastapi import FastAPI, Request, Form, Depends, HTTPException
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
 from fastapi_utils.tasks import repeat_every
 from fastapi_rss import RSSFeed, RSSResponse, Item, Category, CategoryAttrs, GUID
 
 import uuid
 
-import database as database
-import models as models
-import config as config
-import MXroute as MXroute
-from log import logger
-import mail2feed as mail2feed
+import app.database as database
+import app.models as models
+import app.config as config
+import app.MXroute as MXroute
+from app.log import logger
+import app.mail2feed as mail2feed
 
 database.Base.metadata.create_all(bind=database.engine)
 
 app = FastAPI()
+app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="./templates")
 settings = config.settings
 mx = MXroute.MXroute(settings.dapanel_user, settings.dapanel_pass, settings.dapanel_url)
@@ -91,7 +93,7 @@ def new_routing(request: Request, email: str = Form(...)):
     new_feed = models.FeedBase(email=email)
     new_dict = vars(create_new_feed(new_feed))
     new_dict['request'] = request
-    return templates.TemplateResponse("new.html", new_dict)
+    return templates.TemplateResponse("success.html", new_dict)
 
 
 @app.get('/rss/{email}')

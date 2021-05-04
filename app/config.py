@@ -1,6 +1,6 @@
 from pydantic import BaseSettings
 
-from log import logger
+from app.log import logger
 
 class Settings(BaseSettings):
     site_url: str

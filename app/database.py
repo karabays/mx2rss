@@ -6,9 +6,9 @@ from sqlalchemy.orm import sessionmaker, relationship, Session
 
 from fastapi_rss import RSSFeed, RSSResponse, Item, Category, CategoryAttrs, GUID
 
-import models as models
-import config as config
-from log import logger
+import app.models as models
+import app.config as config
+from app.log import logger
 
 
 
