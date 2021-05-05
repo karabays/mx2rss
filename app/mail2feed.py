@@ -25,4 +25,5 @@ def fetch_mails():
         logger.info(f"New message retrieved for {msg.headers['envelope-to']}")
     if len(feeds) == 0:
         logger.info("No new messages.")
+    mailbox.logout()
     return feeds

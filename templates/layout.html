@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en" class="h-100">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="{{ url_for('static', path='css/bootstrap.min.css') }}" rel="stylesheet">
+    <link rel="shortcut icon" href="{{ url_for('static', path='favicon.ico') }}">
+    <title>{% block title %}{% endblock %} - mx2rss</title>
+  </head>
+  <body class="d-flex flex-column h-100">
+    <main class="flex-shrink-0">
+    {% block content %}{% endblock %}
+    </main>
+    <footer class="footer mt-auto py-3 bg-light">
+        <div class="container">
+            <span class="text-muted"><a href="https://github.com/karabays/mx2rss">GitHub</a> - <a href="/docs">Api Docs</a></span>
+        </div>
+    </footer>
+  </body>
+</html>

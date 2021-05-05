@@ -93,7 +93,7 @@ def new_routing(request: Request, email: str = Form(...)):
     new_feed = models.FeedBase(email=email)
     new_dict = vars(create_new_feed(new_feed))
     new_dict['request'] = request
-    return templates.TemplateResponse("success.html", new_dict)
+    return templates.TemplateResponse("result.html", new_dict)
 
 
 @app.get('/rss/{email}')

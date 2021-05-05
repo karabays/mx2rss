@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% block title %}Home{% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block content %}
+<div class="container">
+    <h1 class="mt-5">mx2rss</h1>
+    <p class="lead">A new routing for is created. Use <b>{{email_id}}</b> for subscribing to newsletters.</p>
+    <p><a href="{{url}}">{{url}}</a> </p>
+    <p>Use the url above with your favourite RSS reader. The link can't be retrieved. If you lose it, create a new mailbox and note the link this time.</p>
+</div>
+{% endblock %}

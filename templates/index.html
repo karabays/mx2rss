@@ -1,14 +1,13 @@
-<html>
-<head>
-    <title>emails to RSS</title>
-    <link href="{{ url_for('static', path='css/bootstrap.min.css') }}" rel="stylesheet">
-</head>
-<body>
-    
+{% extends "layout.html" %}
+{% block title %}Home{% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block content %}
     <div class="container">
-    <h1>mx2rss</h1>
-    <p>Reduce the newsletters in your inbox. Create an email forwarder in the below and subscribed to RSS feed shown afterwards.</p>
-    <p>Create a new address to subscribe newsletters:</p>
+    <h1 class="mt-5">mx2rss</h1>
+    <p class="lead">Reduce the newsletters in your inbox. Create an email forwarder with below and subscribe to RSS feed shown in the next page.</p>
+    <p>Enter a new email address for subscribing newsletters:</p>
     <form action="/new" method="post">
         <div class="row g-3 align-items-center">
             <div class="col-auto">
@@ -27,6 +26,7 @@
             </div>
         </div>
     </form>
+    <p></p>
     <div class="alert alert-primary" role="alert">
         <h4>Important:</h4>
         <p>RSS feeds are protected by a passphrase but still publicly accessible if someone learns the URL.</p>
@@ -34,6 +34,4 @@
         <p>In general don't use this for creating accounts.</p>
         <p>You can setup auto forwarders from gmail etc. but keep above points in mind.</p>
     </div>
-
-</body>
-</html>
+{% endblock %}
