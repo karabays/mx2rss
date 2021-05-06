@@ -32,12 +32,13 @@ class MXroute:
     def add_forwarder(self, email, domain, target):
         payload = {"action":"create", "domain":domain, "user":email, "email":target}
         r = self.make_call('CMD_API_EMAIL_FORWARDERS', payload=payload)
+        print(r)
         if r['error']==['0']:
             logger.info(f"forwarder created: {email}@{domain} -> {target}")
             return {"result":"Success", "detail":f"forwarder created: {email}@{domain} -> {target}"}
         else:
             logger.warning(f"Forwarder creation failed: {r['details']}")
-            return {"result": "Fail", "detail":r['details']}
+            return {"result": "Fail", "detail":r['details'][0]}
         return r
 
 

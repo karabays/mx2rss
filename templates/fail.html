@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+{% block title %}Home{% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block content %}
+<div class="container">
+    <h1 class="mt-5">mx2rss</h1>
+    <p class="lead">Fail: {{detail|safe}} </p>
+</div>
+{% endblock %}

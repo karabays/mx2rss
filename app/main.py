@@ -28,19 +28,24 @@ mx = MXroute.MXroute(settings.dapanel_user, settings.dapanel_pass, settings.dapa
 
 def create_new_feed(feed: models.FeedBase):
     if database.get_feed_by_email(email=feed.email):
-        raise HTTPException(status_code=400, detail="Email already registered")
-    mx.add_forwarder(feed.email, settings.email_domain, settings.inbox)
-    new_feed = database.create_feed(email=feed.email)
-    first_feed(new_feed)
-    return new_feed
+        return {"result":'Fail', 'detail':"Email already registered"}
+    mx_result = mx.add_forwarder(feed.email, settings.email_domain, settings.inbox)
+    if mx_result['result'] == "Success": 
+        new_feed = vars(database.create_feed(email=feed.email))
+        new_feed['result'] = 'Success'
+        first_feed(new_feed)
+        return new_feed
+    else:
+        return mx_result
 
 
 def first_feed(feed):
     new_feed = mail2feed.first_item_dict
-    new_feed['author'] = feed.email_id
-    new_feed['feed_id'] = feed.id
+    new_feed['author'] = feed['email_id']
+    new_feed['feed_id'] = feed['id']
     new_feed['guid'] = str(uuid.uuid4())
     database.create_feed_item(new_feed)
+
 
 @app.on_event('startup')
 @repeat_every(seconds=int(settings.fetch_frequency), logger=logger)
@@ -91,9 +96,13 @@ def home(request: Request):
 @app.post("/new/", response_class=HTMLResponse)
 def new_routing(request: Request, email: str = Form(...)):
     new_feed = models.FeedBase(email=email)
-    new_dict = vars(create_new_feed(new_feed))
-    new_dict['request'] = request
-    return templates.TemplateResponse("result.html", new_dict)
+    result = create_new_feed(new_feed)
+    result['request'] = request
+    print(result)
+    if result['result'] == 'Fail':
+        return templates.TemplateResponse("fail.html", result)
+    else:
+        return templates.TemplateResponse("success.html", result)
 
 
 @app.get('/rss/{email}')
