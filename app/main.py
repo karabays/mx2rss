@@ -64,6 +64,7 @@ def serve_feeds(email):
     feed = database.get_feed_by_email(email)
     if feed is None:
         raise HTTPException(404, detail='Feed do not exist.')
+    
     feed_items = database.get_feed_items(feed.id)
 
     items = []
@@ -79,7 +80,6 @@ def serve_feeds(email):
         'last_build_date': feed.last_build_date,
         'item': items,
     }
-
     return feed_data
 
 
