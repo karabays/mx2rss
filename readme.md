@@ -2,11 +2,14 @@
 # mx2rss
 
 Read your newsletters with RSS. Inspired by [Kill-the-newsletter!](https://kill-the-newsletter.com/) website. 
-It's also self-hostable but requires also to maintain your own mail server.
+Which is also self-hostable but requires to maintain your own mail server. So here is a solution for the lazy.
 
 You need [MXRoute](https://mxroute.com/) account for this to work.
 Program uses DirectAdmin api to create email forwarders. 
 I have no ability to test it but in theory it should work with other email service providers using DirectAdmin.
+
+I wouldn't trust myself to expose this website to the internet. My suggestion is to run this in your local network
+and use it with a self hosted RSS reader like freshrss.
 
 
 ## Installation 
@@ -18,7 +21,7 @@ Clone the repo, install the `requirements.txt`
     pip install -r requirements.txt
 
 
-Run the `start.sh`
+Run the `start.sh` file.
 
 ### Docker
 
@@ -54,8 +57,6 @@ To run this project, you will need to add the following environment variables to
 `FETCH_FREQUENCY` how oftern you want to check for mail (in seconds)
 
 
-
-  
 
   
 ## Acknowledgements

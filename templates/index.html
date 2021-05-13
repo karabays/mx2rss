@@ -6,7 +6,7 @@
 {% block content %}
     <div class="container">
     <h1 class="mt-5">mx2rss</h1>
-    <p class="lead">Reduce the newsletters in your inbox. Create an email forwarder with below and subscribe to RSS feed shown in the next page.</p>
+    <p class="lead">Reduce the newsletters in your inbox. Create an email forwarder with below form and subscribe to RSS feed shown in the next page.</p>
     <p>Enter a new email address for subscribing newsletters:</p>
     <form action="/new" method="post">
         <div class="row g-3 align-items-center">
@@ -30,8 +30,8 @@
     <div class="alert alert-primary" role="alert">
         <h4>Important:</h4>
         <p>RSS feeds are protected by a passphrase but still publicly accessible if someone learns the URL.</p>
-        <p>Don't use this for websites send sensitive information like password recovery, confirmation codes etc.</p>
-        <p>In general don't use this for creating accounts.</p>
+        <p>Don't use this for websites that send sensitive information like password recovery links, 2FA confirmation codes etc.</p>
+        <p>In general don't use this for creating accounts because of the above risk. But if you don't mind, me neither.</p>
         <p>You can setup auto forwarders from gmail etc. but keep above points in mind.</p>
     </div>
 {% endblock %}
