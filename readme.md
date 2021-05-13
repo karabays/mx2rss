@@ -17,23 +17,19 @@ Clone the repo, install the `requirements.txt`
 
     pip install -r requirements.txt
 
-Go to `app` folder
 
-    cd app
-
-a) and run the `main.py` file
-
-    python3 main.py
-
-Or b) run with gunicorn in daemon mode:
-
-    gunicorn main:app --bind 0.0.0.0:9123 -k 'uvicorn.workers.UvicornWorker' --daemon
+Run the `start.sh`
 
 ### Docker
 
 Once I figure out how to do it, I will tell you.
 
+## Update
 
+Pull the repository again and run the start script. It will restart the uvicorn if there is already a running process.
+
+    git pull
+    bash start.sh
     
 ## Environment Variables
 
